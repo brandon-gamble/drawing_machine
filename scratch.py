@@ -16,25 +16,29 @@ one function with a type argument? (e.g. standard, lissajous...)
 should drive trace be a class?
     then have a method for each type of drive trace...
 '''
-def get_drive_trace_():
-
-    return
-
+def get_drive_trace(r,c,omega,n):
+    drive = np.zeros([2,n])
+    drive[0,:] = r*np.cos(omega * np.linspace(0,n-1,n))
+    drive[1,:] = r*np.sin(omega * np.linspace(0,n-1,n))
+    drive = drive + c
+    return drive
 
 def get_float_trace_pos(drive1, drive2, r1, r2):
     '''
     2CI solver where centers of circles are given by the two drive arrays (size 2xn)
+    http://www.ambrsoft.com/TrigoCalc/Circles2/circle2intersection/CircleCircleIntersection.htm
     '''
 
     d_sqrd = (drive1[0,:]-drive2[0,:])**2 + (drive1[1,:]-drive2[1,:])**2
     d = d_sqrd**0.5
 
-    a = (d_sqrd + r1**2 - r2**2)/(2*d)
+    A = 1/4*((d+r1+r2)*(d+r1-r2)*(d-r1+r2)*(-d+r1+r2))**0.5
 
-    h = (r1**2 - a**2)**0.5
+    var1 = (r1**2-r2**2)/2/d_sqrd
+    var2 = 2*A/d_sqrd
 
-    x = drive1[0,:] + a/d*(drive1[0,:]-drive2[0,:]) - h/d*(drive1[1,:]-drive2[1,:])
-    y = drive1[1,:] + a/d*(drive1[1,:]-drive2[1,:]) + h/d*(drive1[0,:]-drive2[0,:])
+    x = (drive1[0,:]+drive2[0,:])/2 + (drive2[0,:]-drive1[0,:])*var1 + (drive1[1,:]-drive2[1,:])*var2
+    y = (drive1[1,:]+drive2[1,:])/2 + (drive2[1,:]-drive1[1,:])*var1 - (drive1[0,:]-drive2[0,:])*var2
 
     return np.array([x,y])
 
@@ -46,12 +50,13 @@ def get_float_trace_neg(drive1, drive2, r1, r2):
     d_sqrd = (drive1[0,:]-drive2[0,:])**2 + (drive1[1,:]-drive2[1,:])**2
     d = d_sqrd**0.5
 
-    a = (d_sqrd + r1**2 - r2**2)/(2*d)
+    A = 1/4*((d+r1+r2)*(d+r1-r2)*(d-r1+r2)*(-d+r1+r2))**0.5
 
-    h = (r1**2 - a**2)**0.5
+    var1 = (r1**2-r2**2)/2/d_sqrd
+    var2 = 2*A/d_sqrd
 
-    x = drive1[0,:] + a/d*(drive1[0,:]-drive2[0,:]) + h/d*(drive1[1,:]-drive2[1,:])
-    y = drive1[1,:] + a/d*(drive1[1,:]-drive2[1,:]) - h/d*(drive1[0,:]-drive2[0,:])
+    x = (drive1[0,:]+drive2[0,:])/2 + (drive2[0,:]-drive1[0,:])*var1 - (drive1[1,:]-drive2[1,:])*var2
+    y = (drive1[1,:]+drive2[1,:])/2 + (drive2[1,:]-drive1[1,:])*var1 + (drive1[0,:]-drive2[0,:])*var2
 
     return np.array([x,y])
 
@@ -94,3 +99,26 @@ def get_spirograph(smear, spin_center, omega, num_lobes):
         spirograph.append(this_lobe)
 
     return spirograph
+
+
+if __name__ == "__main__":
+
+
+    test = 1
+
+    if test == 1:
+        n = 2000
+        c = np.array([[0],[0]])
+        drive1 = get_drive_trace(2,c,.12,n)
+
+        c = np.array([[9],[0]])
+        drive2 = get_drive_trace(3,c,.11,n)
+
+        float_p = get_float_trace_pos(drive1, drive2, 10,10)
+        float_n = get_float_trace_neg(drive1, drive2, 10,10)
+
+        plt.plot(drive1[0,:],drive1[1,:])
+        plt.plot(drive2[0,:],drive2[1,:])
+        plt.plot(float_p[0,:],float_p[1,:])
+        plt.plot(float_n[0,:],float_n[1,:])
+        plt.show()

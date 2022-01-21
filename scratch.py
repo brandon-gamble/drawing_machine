@@ -16,6 +16,17 @@ one function with a type argument? (e.g. standard, lissajous...)
 should drive trace be a class?
     then have a method for each type of drive trace...
 '''
+
+class drive_trace():
+    def __init__(self):
+        return
+    def circle(r,c,omega,n):
+        drive = np.zeros([2,n])
+        drive[0,:] = r*np.cos(omega * np.linspace(0,n-1,n))
+        drive[1,:] = r*np.sin(omega * np.linspace(0,n-1,n))
+        drive = drive + c
+        return drive
+
 def get_drive_trace(r,c,omega,n):
     drive = np.zeros([2,n])
     drive[0,:] = r*np.cos(omega * np.linspace(0,n-1,n))
@@ -23,7 +34,7 @@ def get_drive_trace(r,c,omega,n):
     drive = drive + c
     return drive
 
-def get_float_trace_pos(drive1, drive2, r1, r2):
+def get_2ci_pos(drive1, drive2, r1, r2):
     '''
     2CI solver where centers of circles are given by the two drive arrays (size 2xn)
     http://www.ambrsoft.com/TrigoCalc/Circles2/circle2intersection/CircleCircleIntersection.htm
@@ -42,7 +53,7 @@ def get_float_trace_pos(drive1, drive2, r1, r2):
 
     return np.array([x,y])
 
-def get_float_trace_neg(drive1, drive2, r1, r2):
+def get_2ci_neg(drive1, drive2, r1, r2):
     '''
     2CI solver where centers of circles are given by the two drive arrays (size 2xn)
     '''
@@ -114,8 +125,8 @@ if __name__ == "__main__":
         c = np.array([[9],[0]])
         drive2 = get_drive_trace(3,c,.11,n)
 
-        float_p = get_float_trace_pos(drive1, drive2, 10,10)
-        float_n = get_float_trace_neg(drive1, drive2, 10,10)
+        float_p = get_2ci_pos(drive1, drive2, 10,10)
+        float_n = get_2ci_neg(drive1, drive2, 10,10)
 
         plt.plot(drive1[0,:],drive1[1,:])
         plt.plot(drive2[0,:],drive2[1,:])

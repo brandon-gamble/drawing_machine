@@ -15,7 +15,7 @@ def activation(v1,w1,v2,w2):
 ########
 # TREE #
 ########
-class tree_node:
+class node:
     def __init__(self, value):
         self.value = value
         self.left_child = None
@@ -25,45 +25,45 @@ class tree_node:
 
     # def insert_left(self, value):
     #     if self.left_child == None:
-    #         self.left_child = tree_node(value)
+    #         self.left_child = node(value)
     #     else:
-    #         new_node = tree_node(value)
+    #         new_node = node(value)
     #         new_node.left_child = self.left_child
     #         self.left_child = new_node
     #
     # def insert_right(self, value):
     #     if self.right_child == None:
-    #         self.right_child = tree_node(value)
+    #         self.right_child = node(value)
     #     else:
-    #         new_node = tree_node(value)
+    #         new_node = node(value)
     #         new_node.right_child = self.right_child
     #         self.right_child = new_node
 
     def populate_node(self):
         self.value = activation(self.left_child.value,self.left_weight, self.right_child.value,self.right_weight)
 
-def preorder(node):
-    if node:
-        print(node.value)
-        preorder(node.left_child)
-        preorder(node.right_child)
+def preorder(root):
+    if root:
+        print(root.value)
+        preorder(root.left_child)
+        preorder(root.right_child)
 
-def inorder(node):
-    if node:
-        inorder(node.left_child)
-        print(node.value)
-        inorder(node.right_child)
-def postorder(node):
-    if node:
-        postorder(node.left_child)
-        postorder(node.right_child)
-        print(node.value)
+def inorder(root):
+    if root:
+        inorder(root.left_child)
+        print(root.value)
+        inorder(root.right_child)
+def postorder(root):
+    if root:
+        postorder(root.left_child)
+        postorder(root.right_child)
+        print(root.value)
 
-def postorder_populate(node):
-    if not node.value:
-        postorder_populate(node.left_child)
-        postorder_populate(node.right_child)
-        node.populate_node()
+def postorder_populate(root):
+    if not root.value:
+        postorder_populate(root.left_child)
+        postorder_populate(root.right_child)
+        root.populate_node()
 
 
 if __name__ == "__main__":
@@ -110,12 +110,12 @@ if __name__ == "__main__":
         # technically not tree bc c connects to a and b #
         #################################################
 
-        a = tree_node(None)
-        b = tree_node(None)
-        c = tree_node(2)
-        d = tree_node(None)
-        e = tree_node(1)
-        f = tree_node(4)
+        a = node(None)
+        b = node(None)
+        c = node(2)
+        d = node(None)
+        e = node(1)
+        f = node(4)
 
         a.left_child = c
         a.left_weight = 3
@@ -147,21 +147,22 @@ if __name__ == "__main__":
         print('d: %d' % d.value) # 3
 
 
+
     elif test == 2:
 
-        a = tree_node(1)
-        b = tree_node(2)
-        c = tree_node(3)
-        d = tree_node(4)
-        e = tree_node(5)
-        f = tree_node(6)
-        g = tree_node(7)
-        h = tree_node(8)
-        i = tree_node(9)
-        j = tree_node(10)
-        k = tree_node(11)
-        l = tree_node(12)
-        m = tree_node(13)
+        a = node(1)
+        b = node(2)
+        c = node(3)
+        d = node(4)
+        e = node(5)
+        f = node(6)
+        g = node(7)
+        h = node(8)
+        i = node(9)
+        j = node(10)
+        k = node(11)
+        l = node(12)
+        m = node(13)
 
         a.left_child = c
         a.right_child = b
@@ -190,21 +191,21 @@ if __name__ == "__main__":
     elif test == 3:
 
         # input nodes
-        f = tree_node(6)
-        i = tree_node(4)
-        k = tree_node(3)
-        l = tree_node(1)
-        m = tree_node(2)
-        e = tree_node(5)
+        f = node(6)
+        i = node(4)
+        k = node(3)
+        l = node(1)
+        m = node(2)
+        e = node(5)
 
         # intermediate/output nodes
-        a = tree_node(None)
-        b = tree_node(None)
-        c = tree_node(None)
-        d = tree_node(None)
-        g = tree_node(None)
-        h = tree_node(None)
-        j = tree_node(None)
+        a = node(None)
+        b = node(None)
+        c = node(None)
+        d = node(None)
+        g = node(None)
+        h = node(None)
+        j = node(None)
 
         a.left_child = c
         a.right_child = b

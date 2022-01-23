@@ -111,6 +111,17 @@ def get_spirograph(smear, spin_center, omega, num_lobes):
 
     return spirograph
 
+def check_clearance(c1,arm1,c2,arm2):
+    # c takes form (x,y,r)
+
+    d = np.sqrt((c1[0]-c2[0])**2+(c1[1]-c2[1])**2)
+
+    if arm1+arm2 >= c1[2]+c2[2]+d:
+        check = True
+    else:
+        check = False
+
+    return check
 
 if __name__ == "__main__":
 

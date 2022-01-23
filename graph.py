@@ -65,6 +65,24 @@ def postorder_populate(root):
         postorder_populate(root.right_child)
         root.populate_node()
 
+def postorder_populate_w_clearance_check(root):
+    if not root.value:
+        postorder_populate(root.left_child)
+        postorder_populate(root.right_child)
+
+        # make bounding circles for traces of parent nodes
+        # circle format is list with (x,y,r)
+        circ_left = smallestenclosingcircle.make_circle(root.left_child.value)
+        circ_right = smallestenclosingcircle.make_circle(root.right_child.value)
+
+        d = np.sqrt((circ_left[0]-circ_right[0])**2+(circ_left[0]-circ_right[0])**2)
+
+        clearance = (root.left_weight + root.right_weight) - (circ_left[2] + d + circ_right[2])
+        if clearance >= 0
+            root.populate_node()
+        else:
+            print('clearance is %f. not long enough' % clearance)
+
 
 if __name__ == "__main__":
 

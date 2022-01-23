@@ -72,8 +72,8 @@ def postorder_populate_w_clearance_check(root):
 
         # make bounding circles for traces of parent nodes
         # circle format is list with (x,y,r)
-        circ_left = smallestenclosingcircle.make_circle(root.left_child.value)
-        circ_right = smallestenclosingcircle.make_circle(root.right_child.value)
+        circ_left = smallestenclosingcircle.make_circle(root.left_child.value.transpose())
+        circ_right = smallestenclosingcircle.make_circle(root.right_child.value.transpose())
 
         d = np.sqrt((circ_left[0]-circ_right[0])**2+(circ_left[0]-circ_right[0])**2)
 

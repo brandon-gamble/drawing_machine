@@ -147,7 +147,6 @@ if __name__ == "__main__":
         print('d: %d' % d.value) # 3
 
 
-
     elif test == 2:
 
         a = node(1)

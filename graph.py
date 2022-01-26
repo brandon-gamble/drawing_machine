@@ -1,9 +1,15 @@
+import numpy as np
+import smallestenclosingcircle
+
 # https://www.educative.io/edpresso/how-to-implement-a-graph-in-python
 
 # activation function
 def activation(v1,w1,v2,w2):
     return v1*w1 + v2*w2
 
+import scratch
+def activation(v1,w1,v2,w2):
+    return scratch.get_2ci_pos(v1,v2,w1,w2)
 
 #########
 # GRAPH #
@@ -60,15 +66,31 @@ def postorder(root):
         print(root.value)
 
 def postorder_populate(root):
-    if not root.value:
+    try:
+        # true if no value
+        is_empty = not root.value
+    except:
+        # if value exists and is array, we can't interpet "not root.value"
+        # so we must forcefully say that is_empty = False
+        is_empty = False
+
+    if is_empty: # if node is empty, enter loop to populate
         postorder_populate(root.left_child)
         postorder_populate(root.right_child)
         root.populate_node()
 
 def postorder_populate_w_clearance_check(root):
-    if not root.value:
-        postorder_populate(root.left_child)
-        postorder_populate(root.right_child)
+    try:
+        # true if no value
+        is_empty = not root.value
+    except:
+        # if value exists and is array, we can't interpet "not root.value"
+        # so we must forcefully say that is_empty = False
+        is_empty = False
+
+    if is_empty: # if node is empty, enter loop to populate
+        postorder_populate_w_clearance_check(root.left_child)
+        postorder_populate_w_clearance_check(root.right_child)
 
         # make bounding circles for traces of parent nodes
         # circle format is list with (x,y,r)
@@ -78,7 +100,7 @@ def postorder_populate_w_clearance_check(root):
         d = np.sqrt((circ_left[0]-circ_right[0])**2+(circ_left[0]-circ_right[0])**2)
 
         clearance = (root.left_weight + root.right_weight) - (circ_left[2] + d + circ_right[2])
-        if clearance >= 0
+        if clearance >= 0:
             root.populate_node()
         else:
             print('clearance is %f. not long enough' % clearance)

@@ -114,6 +114,9 @@ def get_spirograph(smear, spin_center, omega, num_lobes):
 
 if __name__ == "__main__":
 
+    '''
+    1   simple 5bl trace test using 2ci
+    '''
 
     test = 1
 

@@ -21,6 +21,18 @@ class drive_trace():
     def __init__(self):
         return
     def circle(r,c,omega,n):
+        '''
+        r   float       radius
+        c   2x1 array   center location, (x;y)
+        omega float     angular velocity
+        n   int         number of points
+
+        e.g.
+        n = 2000
+        c = np.array([[0],[0]])
+        drive_trace.circle(2,c,0.12,n)
+        '''
+
         drive = np.zeros([2,n])
         drive[0,:] = r*np.cos(omega * np.linspace(0,n-1,n))
         drive[1,:] = r*np.sin(omega * np.linspace(0,n-1,n))
@@ -38,6 +50,9 @@ def get_2ci_pos(drive1, drive2, r1, r2):
     '''
     2CI solver where centers of circles are given by the two drive arrays (size 2xn)
     http://www.ambrsoft.com/TrigoCalc/Circles2/circle2intersection/CircleCircleIntersection.htm
+
+    drive   2xn array   drive array
+    r       float       radius of link
     '''
 
     d_sqrd = (drive1[0,:]-drive2[0,:])**2 + (drive1[1,:]-drive2[1,:])**2
@@ -98,9 +113,10 @@ def get_smear(trace, spin_center, omega):
     return smear
 
 def get_spirograph(smear, spin_center, omega, num_lobes):
-    n = smear.shape[1]
-    angular_width = omega*n
+    n = smear.shape[1]          # smear is 2xn, so shape[1] is how many points
+    angular_width = omega*n     # total angle occupied by smear
 
+    # rotation matrix
     rot_mat = np.array([[np.cos(angular_width), -np.sin(angular_width)],[np.sin(angular_width), np.cos(angular_width)]])
 
     spirograph = []

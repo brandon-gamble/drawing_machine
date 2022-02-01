@@ -57,7 +57,7 @@ elif test == 2:
 
     fixed_pt = np.zeros([2,n]) # fixed point of pantograph
 
-    c = np.array([[.5],[0]]) # center of circle
+    c = np.array([[1],[0]]) # center of circle
     pre_image = scratch.drive_trace.circle(0.1,c,.02,n) # circle as pre-image
 
     #####################
@@ -98,18 +98,35 @@ elif test == 2:
     ##################
     # populate graph #
     ##################
-    graph.postorder_populates(a)
+    graph.postorder_populate(a)
 
     ################
     #     plot     #
     ################
 
+    # input
     plt.plot(f.value[0,0],f.value[1,0]) # fixed point
     plt.plot(d.value[0,:],d.value[1,:]) # pre-image
 
+    # joints
     plt.plot(e.value[0,:],e.value[1,:])
     plt.plot(c.value[0,:],c.value[1,:])
     plt.plot(b.value[0,:],b.value[1,:])
-    plt.plot(a.value[0,:],a.value[1,:]) # image
+
+    # image
+    plt.plot(a.value[0,:],a.value[1,:])
+
+    # machine
+    long_x = [a.value[0,0],c.value[0,0],f.value[0,0]]
+    long_y = [a.value[1,0],c.value[1,0],f.value[1,0]]
+    long_arms = np.array([long_x,long_y])
+
+    short_x = [b.value[0,0],d.value[0,0],e.value[0,0]]
+    short_y = [b.value[1,0],d.value[1,0],e.value[1,0]]
+    short_arms = np.array([short_x,short_y])
+
+    plt.plot(long_x,long_y,'b--')
+
+    plt.plot(short_x,short_y,'b--')
 
     plt.show()

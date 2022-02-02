@@ -1,15 +1,16 @@
 import numpy as np
 import smallestenclosingcircle
+import activation as act_fns
 
 # https://www.educative.io/edpresso/how-to-implement-a-graph-in-python
 
-# activation function
-def activation(v1,w1,v2,w2):
-    return v1*w1 + v2*w2
-
-import scratch
-def activation(v1,w1,v2,w2):
-    return scratch.get_2ci_pos(v1,v2,w1,w2)
+# # activation function
+# def activation(v1,w1,v2,w2):
+#     return v1*w1 + v2*w2
+#
+# import scratch
+# def activation(v1,w1,v2,w2):
+#     return scratch.get_2ci_pos(v1,v2,w1,w2)
 
 class node:
     '''
@@ -27,6 +28,7 @@ class node:
         self.right_parent = None
         self.left_weight = 1    # initailize with weight of 1
         self.right_weight = 1
+        self.activation_function = act_fns.get_2ci_pos # default activation is get_2ci_pos
 
     # def insert_left(self, value):
     #     if self.left_parent == None:
@@ -46,7 +48,7 @@ class node:
 
     def populate_node(self):
         # populate node with activation function
-        self.value = activation(self.left_parent.value,self.left_weight, self.right_parent.value,self.right_weight)
+        self.value = self.activation_function(self.left_parent.value,self.left_weight, self.right_parent.value,self.right_weight)
 
 def preorder(root):
     # print root values by preorder algorithm
@@ -177,12 +179,12 @@ def postorder_populate_w_clearance_check(root):
 if __name__ == "__main__":
 
     '''
-    1   simple tree, manual populate
+    1   simple tree, manual populate each node
     2   more complex tree, traversing
     3   same tree as 2, but trying to autopopulate with post order
     '''
 
-    test = 3
+    test = 1
 
     if test == 1:
         '''
@@ -229,16 +231,19 @@ if __name__ == "__main__":
         a.left_weight = 3
         a.right_parent = b
         a.right_weight = 1
+        a.activation_function = act_fns.test
 
         b.left_parent = c
         b.left_weight = 2
         b.right_parent = d
         b.right_weight = 1
+        b.activation_function = act_fns.test
 
         d.left_parent = e
         d.left_weight = 1
         d.right_parent = f
         d.right_weight = 0.5
+        d.activation_function = act_fns.test
 
         d.populate_node()
         b.populate_node()
@@ -317,18 +322,25 @@ if __name__ == "__main__":
 
         a.left_parent = c
         a.right_parent = b
+        a.activation_function = act_fns.test
         b.left_parent = c
         b.right_parent = d
+        b.activation_function = act_fns.test
         c.left_parent = e
         c.right_parent = f
+        c.activation_function = act_fns.test
         d.left_parent = h
         d.right_parent = g
+        d.activation_function = act_fns.test
         g.left_parent = h
         g.right_parent = i
+        g.activation_function = act_fns.test
         h.left_parent = j
         h.right_parent = k
+        h.activation_function = act_fns.test
         j.left_parent = l
         j.right_parent = m
+        j.activation_function = act_fns.test
 
         print('postorder (unpopulated):')
         postorder(a)

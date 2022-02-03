@@ -49,8 +49,8 @@ We have described the 4BL as a 2CI solution whose inputs are a circular path and
 3 nodes (circle and circle inputs) -> 5bl
 7 nodes (4bl inputs) -> nested 4bl
 3 nodes (ellipse inputs) -> archimedes trammel
-3 nodes (lissajous) -> analog?? >>  
-
+3 nodes (lissajous) -> analog?? >>  **
+** hypothesized that 5bl trace approaches lissajous for infinitely large radius... so maybe there is somewhat a physical analog?
 
 ## Graph Population
 Given a graph representation of a linkage system, how do we go about solving for the curve drawn by the end effector?

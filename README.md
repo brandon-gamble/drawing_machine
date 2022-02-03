@@ -14,17 +14,20 @@ I was inspired by the drawings of other plotting machines - so called harmonogra
 
 In the fall of 2022, I was able to reframe my thinking of how to go about solving the kinematics of the 5BL in a way that expands to other linkages and drawing machines. What I realized is that parallel driven linkages have a common denominator in their kinematics: the two circle intersection (2CI) equation.
 For the 5BL, it is easy to find the locations of the intermediate joints by their angle and link lengths with simple trig. Using the intermediate joint coordinates as the centers of two circles and the floating link lengths as their radii, the 2CI equation is solved to find the location of the end effector.
-<< insert image of 5bl>>
+
+![5bl](/assets/diagrams/5bl.png)
 
 Similarly, for a 4BL, the distal joint of the driving link is solved with simple trig. The end effector is found by solving the 2CI equation for circles centered at distal joint of the driving link and the fixed frame joint.
-<< insert image of 4bl>>
+
+![4bl](/assets/diagrams/4bl.png)
 
 How are these related? Well, first note that the 2CI solver accepts four arguments: two circle centers and two radii. When solving for a joint location, the radii are always the link lengths on either side of the joint, and the circle centers are the locations of the neighboring joints. For the 5BL, the neighboring joints were both found with trig. For the 4BL, one neighboring joint was found with trig and one neighboring joint was fixed.
 
 For the purpose of drawing curves, we vectorize the 2CI approach, first solving for all the locations of each neighbor joint during the time we are interested in. This array of points is passed to the 2CI solver to produce an array of all the corresponding locations of the joint of interest. What does this input array look like? For the 5BL, both input arrays describe points around a circle. For the 4BL, one input array is points around a circle and the other is a fixed point.
 
 My friend George helped me to realize that We can represent both of these graphically as, well, graphs with three nodes - two parents and one child. The input nodes contain circle center information, and the weights of the connections from parents to child represent the physical link lengths. Borrowing terminology from neural networks, the activation function for the child node is the 2CI equation.
-<< node image >>
+
+![Node](/assets/diagrams/node.png)
 
 In this way, both the 5BL and 4BL have the same graph representation. The difference between them is simply the values contained at the input nodes.
 The beautiful thing about encoding a linkage this way is how it can be expanded.
@@ -33,14 +36,16 @@ The beautiful thing about encoding a linkage this way is how it can be expanded.
 
 #### Coupler
 For example, what if instead of tracing the path of a joint, we want to trace a coupler curve? We can represent the coupler location as another node on our graph. Conveniently, we can describe the coupler location relative to its parent joints using two radii and solve for its location using the 2CI equation.
-<< coupler node image >>
+
+![Coupler node](/assets/diagrams/coupler.png)
 
 #### Scissor 5BL
 A more complex example is the scissor 5BL. To analyze this linkage, we can work backwards from the end effector to the input nodes. **A** is the child of **B** and **C**, so we draw edges connecting **A** to **B** and **C**.
 **B** is the coupler of link **DF**, i.e., it is the child of **D** and **F**, so we draw edges connecting **B** to **D** and **F**.
 Similarly, we draw edges connecting **C** to **D** and **E**.
 Finally, **D** is the child of **E** and **F**, so we draw edges connecting **D** to **E** and **F**.
-<< scissor 5bl image >>
+
+![scissor 5bl image](/assets/diagrams/scissor_5bl.png)
 
 #### 4/5 BL
 We have described the 4BL as a 2CI solution whose inputs are a circular path and a static point. When we trade the static point for another circular path, we get a 5BL. But what happens if we use other cyclic paths (non-circular) as the inputs to the 2CI solver? For example, What if the input paths are ellipses? Lissajous curves? 4BL traces? Using our node representation, it is incredibly simple to solve for the motions of complex machines, as well as generate graphs that may not have a physical analog linkage.

@@ -1,5 +1,5 @@
 '''
-Collection of activation functions for populating nodes. 
+Collection of activation functions for populating nodes.
 
 
 '''

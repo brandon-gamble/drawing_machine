@@ -25,7 +25,7 @@ How are these related? Well, first note that the 2CI solver accepts four argumen
 
 For the purpose of drawing curves, we vectorize the 2CI approach, first solving for all the locations of each neighbor joint during the time we are interested in. This array of points is passed to the 2CI solver to produce an array of all the corresponding locations of the joint of interest. What does this input array look like? For the 5BL, both input arrays describe points around a circle. For the 4BL, one input array is points around a circle and the other is a fixed point.
 
-My friend George helped me to realize that We can represent both of these graphically as, well, graphs with three nodes - two parents and one child. The input nodes contain circle center information, and the weights of the connections from parents to child represent the physical link lengths. Borrowing terminology from neural networks, the activation function for the child node is the 2CI equation.
+I was trying to find a good data structure to store a drawing machine given this new perspective. My [friend George](https://github.com/dairykillsme) suggested a tree structure. The 4BL and 5BL can both be represented these graphically as, well, graphs. Both have three nodes - two parents and one child. The input nodes contain circle center information, and the weights of the connections from parents to child represent the physical link lengths. Borrowing terminology from neural networks, the activation function for the child node is the 2CI equation. 
 
 ![Node](/assets/diagrams/node.png)
 

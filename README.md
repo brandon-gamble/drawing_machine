@@ -61,8 +61,11 @@ We have described the 4BL as a 2CI solution whose inputs are a circular path and
 
 #### Pantograph
 The pantograph, a device with a history in manufacturing, can also be represented as a graph.
-<< pantograph graph image >>
-The standard pantograph scales an input path to an output path. It is typically configured to enlarge the input path, but can be used in the inverse to miniaturize the input path. While this functionality is not of interest to me in plotting organic curves, if the link lengths are modified such that the pantograph is no longer a parallelogram, then the input curve becomes warped. In this way, we can use a modified pantograph to distort curves and produce pleasing drawings.
+
+The standard pantograph scales an input path to an output path. It is typically configured to enlarge the input path, but can be used in the inverse to miniaturize the input path. While this functionality is not of interest for plotting organic curves, the pantograph can still be of use: if the link lengths are modified such that the pantograph is no longer a parallelogram, then the output curve becomes both scaled _and_ warped. In this way, we can use a modified pantograph to distort curves and produce pleasing drawings.
+
+![pantograph](/assets/diagrams/pantograph.png)
+
 
 ## Graph Population
 Given a graph representation of a linkage system, how do we go about solving for the curve drawn by the end effector?

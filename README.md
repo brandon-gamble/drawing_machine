@@ -25,7 +25,7 @@ How are these related? Well, first note that the 2CI solver accepts four argumen
 
 For the purpose of drawing curves, we vectorize the 2CI approach, first solving for all the locations of each neighbor joint during the time we are interested in. This array of points is passed to the 2CI solver to produce an array of all the corresponding locations of the joint of interest. What does this input array look like? For the 5BL, both input arrays describe points around a circle. For the 4BL, one input array is points around a circle and the other is a fixed point.
 
-I was trying to find a good data structure to store a drawing machine given this new perspective. My [friend George](https://github.com/dairykillsme) suggested a tree structure. The 4BL and 5BL can both be represented these graphically as, well, graphs. Both have three nodes - two parents and one child. The input nodes contain circle center information, and the weights of the connections from parents to child represent the physical link lengths. Borrowing terminology from neural networks, the activation function for the child node is the 2CI equation. 
+I was trying to find a good data structure to store a drawing machine given this new perspective. My [friend George](https://github.com/dairykillsme) suggested a tree structure. The 4BL and 5BL can both be represented these graphically as, well, graphs. Both have three nodes - two parents and one child. The input nodes contain circle center information, and the weights of the connections from parents to child represent the physical link lengths. Borrowing terminology from neural networks, the activation function for the child node is the 2CI equation.
 
 ![Node](/assets/diagrams/node.png)
 
@@ -48,10 +48,12 @@ Finally, **D** is the child of **E** and **F**, so we draw edges connecting **D*
 ![scissor 5bl image](/assets/diagrams/scissor_5bl.png)
 
 #### 4/5 BL
-We have described the 4BL as a 2CI solution whose inputs are a circular path and a static point. When we trade the static point for another circular path, we get a 5BL. But what happens if we use other cyclic paths (non-circular) as the inputs to the 2CI solver? For example, What if the input paths are ellipses? Lissajous curves? 4BL traces? Using our node representation, it is incredibly simple to solve for the motions of complex machines, as well as generate graphs that may not have a physical analog linkage.
+We have described the 4BL as a 2CI solution whose inputs are a circular path and a static point. When we trade the static point for another circular path, we get a 5BL. But what happens if we use other cyclic paths (non-circular) as the inputs to the 2CI solver? For example, What if the input paths are ellipses (achieved with the trammel of Archimedes)? Lissajous curves (achieved with [sufficiently large 5BL](https://www.reddit.com/r/mathpics/comments/bta0az/i_found_that_pintograph_drawings_converge_to/))? 4BL traces? Using our node representation, it is incredibly simple to solve for the motions of complex machines, as well as generate graphs that may not have a physical analog linkage.
+
+![4bl node](/assets/diagrams/4bl_node.png)
+![5bl node](/assets/diagrams/5bl_node.png)
+
 << image with :
-3 nodes (circle and point inputs) -> 4BL
-3 nodes (circle and circle inputs) -> 5bl
 7 nodes (4bl inputs) -> nested 4bl
 3 nodes (ellipse inputs) -> archimedes trammel
 3 nodes (lissajous) -> analog?? >>  **

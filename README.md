@@ -23,19 +23,23 @@ Similarly, for a 4BL, the distal joint of the driving link is solved with simple
 
 How are these related? Well, first note that the 2CI solver accepts four arguments: two circle centers and two radii. When solving for a joint location, the radii are always the link lengths on either side of the joint, and the circle centers are the locations of the neighboring joints. For the 5BL, the neighboring joints were both found with trigonometry. For the 4BL, one neighboring joint was found with trigonometry and one neighboring joint was fixed.
 
-For the purpose of drawing curves, we vectorize the 2CI approach, first solving for all the locations of each neighbor joint during the time we are interested in. This array of points is passed to the 2CI solver to produce an array of all the corresponding locations of the joint of interest. What does this input array look like? For the 5BL, both input arrays describe points around a circle. For the 4BL, one input array is points around a circle and the other is a fixed point.
+Again, at a single point in time the 2CI solver accepts two points (circle centers) and two radii. But we are interested in drawing curves over a long period of time. As such, we vectorize the 2CI approach, first solving for all the locations of each neighbor joint during the time we are interested in. This array of points is passed to the 2CI solver to produce an array of all the corresponding locations of the joint of interest. What does these input arrays look like? For the 5BL, both input arrays describe points around a circle, that is, the paths of each intermediate joint spinning continuously. For the 4BL, one input array is points around a circle and the other is a fixed point.
 
-I was trying to find a good data structure to store a drawing machine given this new perspective. My [friend George](https://github.com/dairykillsme) suggested a tree structure. The 4BL and 5BL can both be represented these graphically as, well, graphs. Both have three nodes - two parents and one child. The input nodes contain circle center information, and the weights of the connections from parents to child represent the physical link lengths. Borrowing terminology from neural networks, the activation function for the child node is the 2CI equation.
+I was trying to find a good data structure to store a drawing machine given this new perspective. My [friend George](https://github.com/dairykillsme) suggested a tree structure. Technically, as we will see later on, some linkages can be represented by a binary tree and some linkages (spoiler alert: linkages with coupler curves) are technically not trees but instead graphs. It's similar to the square/rectangle scenario. Every tree is a graph but not every graph is a tree. That being said, the 4BL and 5BL can both be represented these graphically as, well, graphs. Both have three nodes - two parents and one child. The input nodes contain circle center information, and the weights of the connections from parents to child represent the physical link lengths. Borrowing terminology from neural networks, the activation function for the child node is the 2CI equation.
 
 ![Node](/assets/diagrams/node.png)
 
-In this way, both the 5BL and 4BL have the same graph representation. The difference between them is simply the values contained at the input nodes.
-The beautiful thing about encoding a linkage this way is how it can be expanded.
+Notice that both the 4BL and 5BL only have two inputs leading to the end effector. The difference between them is simply the values contained at the input nodes. For the 4BL, one input contains points around a circle and one input contains a static point. For the 5BL, each input contains points around a circle. In this way, both the 5BL and 4BL have the same graph representation.
+
+![4bl node](/assets/diagrams/4bl_node.png)
+![5bl node](/assets/diagrams/5bl_node.png)
+
+The beautiful thing about encoding a linkage this way is how it can be expanded to more complex linkages without having to derive any new kinematic equations. Furthermore, since we are free to pass any array of points as the value of an input node, we can create graphs that do not have a physical analog.
 
 ### Expansions
 
 #### Coupler
-For example, what if instead of tracing the path of a joint, we want to trace a coupler curve? We can represent the coupler location as another node on our graph. Conveniently, we can describe the coupler location relative to its parent joints using two radii and solve for its location using the 2CI equation.
+What if instead of tracing the path of a joint, we want to trace a coupler curve? We can represent the coupler location as another node on our graph. Conveniently, we can describe the coupler location relative to its parent joints using two radii and solve for its location using the 2CI equation.
 
 ![Coupler node](/assets/diagrams/coupler.png)
 
@@ -47,20 +51,17 @@ Finally, **D** is the child of **E** and **F**, so we draw edges connecting **D*
 
 ![scissor 5bl image](/assets/diagrams/scissor_5bl.png)
 
-#### 4/5 BL
+<!-- #### 4/5 BL
 We have described the 4BL as a 2CI solution whose inputs are a circular path and a static point. When we trade the static point for another circular path, we get a 5BL. But what happens if we use other cyclic paths (non-circular) as the inputs to the 2CI solver? For example, What if the input paths are ellipses (achieved with the trammel of Archimedes)? Lissajous curves (achieved with [sufficiently large 5BL](https://www.reddit.com/r/mathpics/comments/bta0az/i_found_that_pintograph_drawings_converge_to/))? 4BL traces? Using our node representation, it is incredibly simple to solve for the motions of complex machines, as well as generate graphs that may not have a physical analog linkage.
-
-![4bl node](/assets/diagrams/4bl_node.png)
-![5bl node](/assets/diagrams/5bl_node.png)
 
 << image with :
 7 nodes (4bl inputs) -> nested 4bl
 3 nodes (ellipse inputs) -> archimedes trammel
 3 nodes (lissajous) -> analog?? >>  **
-** hypothesized that 5bl trace approaches lissajous for infinitely large radius... so maybe there is somewhat a physical analog?
+** hypothesized that 5bl trace approaches lissajous for infinitely large radius... so maybe there is somewhat a physical analog? -->
 
 #### Pantograph
-The pantograph, a device with a history in manufacturing, can also be represented as a graph.
+The pantograph, a device with a history in manufacturing, can also be easily represented as a graph.
 
 The standard pantograph scales an input path to an output path. It is typically configured to enlarge the input path, but can be used in the inverse to miniaturize the input path. While this functionality is not of interest for plotting organic curves, the pantograph can still be of use: if the link lengths are modified such that the pantograph is no longer a parallelogram, then the output curve becomes both scaled _and_ warped. In this way, we can use a modified pantograph to distort curves and produce pleasing drawings.
 
@@ -70,7 +71,9 @@ The standard pantograph scales an input path to an output path. It is typically 
 ## Graph Population
 Given a graph representation of a linkage system, how do we go about solving for the curve drawn by the end effector?
 
-Looking at these graphs, it is easy to see that we can start with the input nodes and populate their children. At successive iterations of population, we can always find an unpopulated child with two parents.
+Looking at these graphs, it is easy to see that we can start with the input nodes and populate their immediate children. At successive iterations of population, we can always find an unpopulated child with two populated parents. We work our way from the input nodes all the way to the root node in this manner: finding an unpopulated node with two populated parents and populating that child.
+
+![scisor 5bl graph](/assets/diagrams/scissor_5bl_graph.png)
 
 Let's look at the scissor 5BL example: if we try to populate **B** or **C** first, we will get an error because **D**, which is a parent to both **B** and **C**, is not yet populated. Instead, we must start at the input nodes **E** and **F** and populate **D**. With **D** populated, **B** and **C** can now be populated. Finally, **A** can be populated and the graph is fully populated.
 

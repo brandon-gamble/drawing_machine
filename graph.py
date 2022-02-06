@@ -48,7 +48,7 @@ class node:
 
     def populate_node(self):
         # populate node with activation function
-        self.value = self.activation_function(self.left_parent.value,self.left_weight, self.right_parent.value,self.right_weight)
+        self.value = self.activation_function(self.left_parent.value, self.right_parent.value, self.left_weight, self.right_weight)
 
 def preorder(root):
     # print root values by preorder algorithm
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     3   same tree as 2, but trying to autopopulate with post order
     '''
 
-    test = 1
+    test = 3
 
     if test == 1:
         '''

@@ -1,10 +1,12 @@
+import numpy as np
+
 '''
 Collection of activation functions for populating nodes.
 
 
 '''
 
-def test(val1,weight1,val2,weight2):
+def test(val1,val2,weight1,weight2):
     return val1*weight1 + val2*weight2
 
 def get_2ci_pos(drive1, drive2, r1, r2):

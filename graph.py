@@ -1,6 +1,7 @@
 import numpy as np
 import smallestenclosingcircle
 import activation as act_fns
+from matplotlib import pyplot as plt
 
 # https://www.educative.io/edpresso/how-to-implement-a-graph-in-python
 
@@ -176,6 +177,19 @@ def postorder_populate_w_clearance_check(root):
             print('clearance is %f. not long enough' % clearance)
 
 
+def plot_parents(node,t):
+    # ASSUMES THAT EVERYTHING IS POPULATED
+    if node.left_parent and node.right_parent:
+        x = [node.left_parent.value[0,t], node.value[0,t], node.right_parent.value[0,t]]
+        y = [node.left_parent.value[1,t], node.value[1,t], node.right_parent.value[1,t]]
+        plt.plot(x,y,'b')
+
+def plot_machine(root,t):
+    if root:
+        plot_machine(root.left_parent,t)
+        plot_machine(root.right_parent,t)
+        plot_parents(root,t)
+
 if __name__ == "__main__":
 
     '''
@@ -184,7 +198,7 @@ if __name__ == "__main__":
     3   same tree as 2, but trying to autopopulate with post order
     '''
 
-    test = 3
+    test = 1
 
     if test == 1:
         '''

@@ -34,9 +34,24 @@ class drive_trace():
         '''
 
         drive = np.zeros([2,n])
-        drive[0,:] = r*np.cos(omega * np.linspace(0,n-1,n))
-        drive[1,:] = r*np.sin(omega * np.linspace(0,n-1,n))
+
+        t_vec = np.linspace(0,n-1,n)
+
+        drive[0,:] = r*np.cos(omega*t_vec)
+        drive[1,:] = r*np.sin(omega*t)
         drive = drive + c
+        return drive
+
+    def lissajous(a, b, omega, delta, n):
+        # https://mathworld.wolfram.com/LissajousCurve.html
+
+        drive = np.zeros([2,n])
+
+        t_vec = np.linspace(0,n-1,n)
+
+        drive[0,:] = a*np.sin(omega*t_vec + delta)
+        drive[1,:] = b*np.sin(t_vec)
+
         return drive
 
 def get_drive_trace(r,c,omega,n):

@@ -171,9 +171,19 @@ def postorder_populate_w_clearance_check(root):
         if clearance < 0:
             print('correcting negative clearance (%f)' % clearance)
             # if we don't have clearance, then extend link lengths
-            # note that to extend the link, we subtract a negative clearance -> i.e. add length
-            root.left_weight = root.left_weight - clearance/2
-            root.right_weight = root.right_weight - clearance/2
+            # while preserving ratio of link lengths
+            # note that clearance is a negative number so it always appears with minus sign in front
+
+            add_left = -clearance*root.left_weight/(root.left_weight+root.right_weight)
+            add_right = -clearance - add_left
+
+            print('LR: %f %f' % (root.left_weight, root.right_weight))
+            print('add: %f %f' % (add_left,add_right))
+
+            root.left_weight = root.left_weight + add_left
+            root.right_weight = root.right_weight + add_right
+
+            print('new LR: %f %f' % (root.left_weight, root.right_weight))
 
         root.populate_node()
 

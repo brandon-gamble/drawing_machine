@@ -10,11 +10,12 @@ from matplotlib import pyplot as plt
 4   what happens when clearance is <0?
         graph gets blown out
 5   clearance correction on 5bl
-
+6   clearance correction on 5bl, lengths chosen to
+        nicely see that link length ratio preserved
 '''
 
 
-test = 5
+test = 6
 
 if test == 1:
 
@@ -269,8 +270,43 @@ elif test == 5:
 
     # compute end effector location
     graph.postorder_populate_w_clearance_check(a)
+    #graph.postorder_populate(a)
 
     # plot
     plt.plot(a.value[0,:],a.value[1,:])
     graph.plot_machine(a,0)
     plt.show()
+
+elif test == 6:
+    n = 5000
+    c = np.array([[0],[0]]) # circle center
+    drive1 = scratch.get_drive_trace(1,c,.12,n) # circular drive trace
+
+    c = np.array([[7],[0]]) # circle center
+    drive2 = scratch.get_drive_trace(1,c,.11,n) # circular drive trace
+
+    a = graph.node(None) # root node (spiro end effector)
+    b = graph.node(drive1) # driving node 1
+    c = graph.node(drive2) # drivign node 2
+
+    # connect a to b with link length 10
+    a.left_parent = b
+    a.left_weight = 4
+
+    # connect a to c with link length 10
+    a.right_parent = c
+    a.right_weight = 2
+
+    # compute end effector location
+    graph.postorder_populate_w_clearance_check(a)
+
+    # plot
+    plt.plot(a.value[0,:],a.value[1,:])
+    graph.plot_machine(a,0)
+    plt.show()
+
+    # expected result:
+    # clearance = -3
+    # change from weights 4,2 to weights 6,3.
+    # total of 3 added (2 to L, 1 to R), ratio of L=2R is preserved.
+    

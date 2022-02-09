@@ -164,17 +164,18 @@ def postorder_populate_w_clearance_check(root):
         circ_right = smallestenclosingcircle.make_circle(root.right_parent.value.transpose())
 
         # distance between parent circles
-        d = np.sqrt((circ_left[0]-circ_right[0])**2+(circ_left[0]-circ_right[0])**2)
+        d = np.sqrt((circ_left[0]-circ_right[0])**2+(circ_left[1]-circ_right[1])**2)
 
         # clerance of linkage
         clearance = (root.left_weight + root.right_weight) - (circ_left[2] + d + circ_right[2])
-        if clearance >= 0:
-            # if we have positive clearance, populate the node
-            root.populate_node()
-        else:
-            # if we don't have clearance, then linkage would break if we tried to
-            # make a physical analog. print a warning
-            print('clearance is %f. not long enough' % clearance)
+        if clearance < 0:
+            print('correcting negative clearance (%f)' % clearance)
+            # if we don't have clearance, then extend link lengths
+            # note that to extend the link, we subtract a negative clearance -> i.e. add length
+            root.left_weight = root.left_weight - clearance/2
+            root.right_weight = root.right_weight - clearance/2
+
+        root.populate_node()
 
 
 def plot_parents(node,t):

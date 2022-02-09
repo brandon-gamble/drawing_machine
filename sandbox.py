@@ -7,11 +7,14 @@ from matplotlib import pyplot as plt
 1   integrating graph and scratch to solve a node encoded 5bl
 2   using graph to solve pantograph and plot machine by hand
 3   solve pantograph and plot machine using graph.draw_machine()
+4   what happens when clearance is <0?
+        graph gets blown out
+5   clearance correction on 5bl
 
 '''
 
 
-test = 3
+test = 5
 
 if test == 1:
 
@@ -212,5 +215,62 @@ elif test == 3:
     ########################
     #     plot machine     #
     ########################
+    graph.plot_machine(a,0)
+    plt.show()
+
+elif test == 4:
+
+    n = 5000
+    c = np.array([[0],[0]]) # circle center
+    drive1 = scratch.get_drive_trace(2,c,.12,n) # circular drive trace
+
+    c = np.array([[9],[0]]) # circle center
+    drive2 = scratch.get_drive_trace(3,c,.11,n) # circular drive trace
+
+    a = graph.node(None) # root node (spiro end effector)
+    b = graph.node(drive1) # driving node 1
+    c = graph.node(drive2) # drivign node 2
+
+    # connect a to b with link length 10
+    a.left_parent = b
+    a.left_weight = 6
+
+    # connect a to c with link length 10
+    a.right_parent = c
+    a.right_weight = 5
+
+    # compute end effector location
+    graph.postorder_populate(a)
+
+    # plot
+    plt.plot(a.value[0,:],a.value[1,:])
+    graph.plot_machine(a,0)
+    plt.show()
+
+elif test == 5:
+    n = 5000
+    c = np.array([[0],[0]]) # circle center
+    drive1 = scratch.get_drive_trace(2,c,.12,n) # circular drive trace
+
+    c = np.array([[9],[0]]) # circle center
+    drive2 = scratch.get_drive_trace(3,c,.11,n) # circular drive trace
+
+    a = graph.node(None) # root node (spiro end effector)
+    b = graph.node(drive1) # driving node 1
+    c = graph.node(drive2) # drivign node 2
+
+    # connect a to b with link length 10
+    a.left_parent = b
+    a.left_weight = 6
+
+    # connect a to c with link length 10
+    a.right_parent = c
+    a.right_weight = 3
+
+    # compute end effector location
+    graph.postorder_populate_w_clearance_check(a)
+
+    # plot
+    plt.plot(a.value[0,:],a.value[1,:])
     graph.plot_machine(a,0)
     plt.show()

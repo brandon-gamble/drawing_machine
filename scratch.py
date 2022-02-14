@@ -20,27 +20,31 @@ should drive trace be a class?
 class drive_trace():
     def __init__(self):
         return
-    def circle(r,c,omega,n):
+    def circle(r,center,starting_theta,omega,n):
         '''
-        r   float       radius
-        c   2x1 array   center location, (x;y)
-        omega float     angular velocity
-        n   int         number of points
+        r               float       radius
+        center          2x1 array   center location, (x;y)
+        starting_theta  float       first theta value
+        omega           float       angular velocity
+        n               int         number of points
 
         e.g.
         n = 2000
         c = np.array([[0],[0]])
-        drive_trace.circle(2,c,0.12,n)
+        drive_trace.circle(2,c,0,0.12,n)
         '''
 
-        drive = np.zeros([2,n])
+        # initialize output vector with zeros
+        circle = np.zeros([2,n])
 
+        # vector of time values
         t_vec = np.linspace(0,n-1,n)
+        t_vec = t_vec + starting_theta # offset by starting theta
 
-        drive[0,:] = r*np.cos(omega*t_vec)
-        drive[1,:] = r*np.sin(omega*t)
-        drive = drive + c
-        return drive
+        circle[0,:] = r*np.cos(omega*t_vec) # x values
+        circle[1,:] = r*np.sin(omega*t_vec) # y values
+        circle = circle + center # shift by circle center
+        return circle
 
     def lissajous(a, b, omega, delta, n):
         # https://mathworld.wolfram.com/LissajousCurve.html
@@ -55,6 +59,8 @@ class drive_trace():
         return drive
 
 def get_drive_trace(r,c,omega,n):
+    # makes a circle 
+
     drive = np.zeros([2,n])
     drive[0,:] = r*np.cos(omega * np.linspace(0,n-1,n))
     drive[1,:] = r*np.sin(omega * np.linspace(0,n-1,n))

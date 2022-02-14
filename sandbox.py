@@ -64,7 +64,7 @@ elif test == 2:
     fixed_pt = np.zeros([2,n]) # fixed point of pantograph
 
     c = np.array([[1],[0]]) # center of circle
-    pre_image = scratch.drive_trace.circle(0.1,c,.02,n) # circle as pre-image
+    pre_image = scratch.drive_trace.circle(0.1,c,0,.02,n) # circle as pre-image
 
     #####################
     # instantiate nodes #
@@ -155,7 +155,7 @@ elif test == 3:
     fixed_pt = np.zeros([2,n]) # fixed point of pantograph
 
     c = np.array([[1],[0]]) # center of circle
-    pre_image = scratch.drive_trace.circle(0.1,c,.02,n) # circle as pre-image
+    pre_image = scratch.drive_trace.circle(0.1,c,0,.02,n) # circle as pre-image
 
     #####################
     # instantiate nodes #
@@ -223,10 +223,12 @@ elif test == 4:
 
     n = 5000
     c = np.array([[0],[0]]) # circle center
-    drive1 = scratch.get_drive_trace(2,c,.12,n) # circular drive trace
+    # drive1 = scratch.get_drive_trace(2,c,.12,n) # circular drive trace
+    drive1 = scratch.drive_trace.circle(2,c,0,.12,n) # circular drive trace
 
     c = np.array([[9],[0]]) # circle center
-    drive2 = scratch.get_drive_trace(3,c,.11,n) # circular drive trace
+    # drive2 = scratch.get_drive_trace(3,c,.11,n) # circular drive trace
+    drive2 = scratch.drive_trace.circle(3,c,0,.11,n) # circular drive trace
 
     a = graph.node(None) # root node (spiro end effector)
     b = graph.node(drive1) # driving node 1
@@ -251,10 +253,12 @@ elif test == 4:
 elif test == 5:
     n = 5000
     c = np.array([[0],[0]]) # circle center
-    drive1 = scratch.get_drive_trace(2,c,.12,n) # circular drive trace
+    # drive1 = scratch.get_drive_trace(2,c,.12,n) # circular drive trace
+    drive1 = scratch.drive_trace.circle(2,c,0,.12,n) # circular drive trace
 
     c = np.array([[9],[0]]) # circle center
-    drive2 = scratch.get_drive_trace(3,c,.11,n) # circular drive trace
+    # drive2 = scratch.get_drive_trace(3,c,.11,n) # circular drive trace
+    drive2 = scratch.drive_trace.circle(3,c,0,.11,n) # circular drive trace
 
     a = graph.node(None) # root node (spiro end effector)
     b = graph.node(drive1) # driving node 1
@@ -280,10 +284,12 @@ elif test == 5:
 elif test == 6:
     n = 5000
     c = np.array([[0],[0]]) # circle center
-    drive1 = scratch.get_drive_trace(1,c,.12,n) # circular drive trace
+    # drive1 = scratch.get_drive_trace(1,c,.12,n) # circular drive trace
+    drive1 = scratch.drive_trace.circle(1,c,0,.12,n) # circular drive trace
 
     c = np.array([[7],[0]]) # circle center
-    drive2 = scratch.get_drive_trace(1,c,.11,n) # circular drive trace
+    # drive2 = scratch.get_drive_trace(1,c,.11,n) # circular drive trace
+    drive2 = scratch.drive_trace.circle(1,c,0,.11,n) # circular drive trace
 
     a = graph.node(None) # root node (spiro end effector)
     b = graph.node(drive1) # driving node 1
@@ -309,4 +315,3 @@ elif test == 6:
     # clearance = -3
     # change from weights 4,2 to weights 6,3.
     # total of 3 added (2 to L, 1 to R), ratio of L=2R is preserved.
-    

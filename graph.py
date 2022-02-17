@@ -52,7 +52,7 @@ class node:
         self.value = self.activation_function(self.left_parent.value, self.right_parent.value, self.left_weight, self.right_weight)
 
     def plot_node(self):
-        plt.plot(node[0,:],node[1,:])
+        plt.plot(self.value[0,:],self.value[1,:])
 
 def preorder(root):
     # print root values by preorder algorithm

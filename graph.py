@@ -51,6 +51,9 @@ class node:
         # populate node with activation function
         self.value = self.activation_function(self.left_parent.value, self.right_parent.value, self.left_weight, self.right_weight)
 
+    def plot_node(self):
+        plt.plot(node[0,:],node[1,:])
+
 def preorder(root):
     # print root values by preorder algorithm
     if root:

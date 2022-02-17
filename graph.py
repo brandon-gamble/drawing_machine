@@ -1,6 +1,7 @@
 import numpy as np
 import smallestenclosingcircle
 import activation as act_fns
+from matplotlib import pyplot as plt
 
 # https://www.educative.io/edpresso/how-to-implement-a-graph-in-python
 
@@ -49,6 +50,9 @@ class node:
     def populate_node(self):
         # populate node with activation function
         self.value = self.activation_function(self.left_parent.value,self.left_weight, self.right_parent.value,self.right_weight)
+
+    def plot_node(self):
+        plt.plot(node[0,:],node[1,:])
 
 def preorder(root):
     # print root values by preorder algorithm

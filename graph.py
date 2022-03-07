@@ -204,6 +204,37 @@ def plot_machine(root,t):
         plot_machine(root.right_parent,t)
         plot_parents(root,t)
 
+def coupler_grid(parent1,parent2,link_length,left,right,up,down,spacing):
+    '''
+    this will create a bunch of new nodes which are children of parent1 and parent2
+    these nodes describe coupler points on the rigid link defined by parents 1 and 2
+
+    arguments:
+        parent1     node    left parent
+        parent2     node    right parent
+        link_length float   distance between parent nodes (joints of link)
+        left        int     number of nodes left  of midpoint of parent nodes
+        right       int     number of nodes right of midpoint of parent nodes
+        up          int     number of nodes up    of midpoint of parent nodes
+        down        int     number of nodes down  of midpoint of parent nodes
+    '''
+
+    '''
+    pseudo code....
+
+    for each coupler_node:
+        x_1 = link_length/2 + k*spacing 
+        x_2 = link_length/2 - k*spacing
+        y = k*spacing
+
+        coupler_node.left_parent = parent1
+        coupler_node.right_parent = parent2
+        coupler_node.left_weight =  (x_1**2 + y**2)**0.5
+        coupler_node.right_weight = (x_2**2 + y**2)**0.5
+    '''
+
+
+
 if __name__ == "__main__":
 
     '''

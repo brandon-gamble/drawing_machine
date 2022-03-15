@@ -344,9 +344,9 @@ elif test == 7:
     # make coupler children #
     #########################
     left = 3
-    right = 4
-    up = 2
-    down = 4
+    right = 3
+    up = 3
+    down = 3
     spacing = 8.9
     children = graph.coupler_grid(a,b,a.left_weight,left,up,right,down,spacing)
 
@@ -360,7 +360,5 @@ elif test == 7:
 
     # plot
     a.plot_node()
-    b.plot_node()
-    c.plot_node()
     graph.plot_machine(a,0)
     plt.show()

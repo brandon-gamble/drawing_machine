@@ -272,6 +272,12 @@ def coupler_grid(parent1,parent2,link_length,left,right,up,down,spacing):
             child.left_parent =  parent1
             child.right_parent = parent2
 
+            # if y is negative, need to take negative solution to 2ci
+            # in order to go below the link
+            if y[row] < 0:
+                child.activation_function = act_fns.get_2ci_neg
+
+
             coupler_children.append(child)
 
     return coupler_children

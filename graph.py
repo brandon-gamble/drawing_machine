@@ -52,7 +52,7 @@ class node:
         self.value = self.activation_function(self.left_parent.value, self.right_parent.value, self.left_weight, self.right_weight)
 
     def plot_node(self):
-        plt.plot(self.value[0,:],self.value[1,:])
+        plt.plot(self.value[0,:],self.value[1,:],linewidth=0.25)
 
 def preorder(root):
     # print root values by preorder algorithm
@@ -217,13 +217,17 @@ def coupler_grid(parent1,parent2,link_length,left,right,up,down,spacing):
         right       int     number of nodes right of midpoint of parent nodes
         up          int     number of nodes up    of midpoint of parent nodes
         down        int     number of nodes down  of midpoint of parent nodes
+        spacing     float   spacing of grid
+
+    output:
+        coupler_children    list    list of nodes representing the children
     '''
 
     '''
     pseudo code....
 
     for each coupler_node:
-        x_1 = link_length/2 + k*spacing 
+        x_1 = link_length/2 + k*spacing
         x_2 = link_length/2 - k*spacing
         y = k*spacing
 
@@ -233,7 +237,44 @@ def coupler_grid(parent1,parent2,link_length,left,right,up,down,spacing):
         coupler_node.right_weight = (x_2**2 + y**2)**0.5
     '''
 
+    # will be making a grid size  (n_rows, n_cols)
+    # add 1 to account for center row and col that intersect at link midpoint
+    n_rows = up + down + 1
+    n_cols = left + right + 1
 
+    # gives how many steps from the midpoint a node is
+    # multiplying by the spacing will give the horizontal or vertical distance
+    # of a point from the midpoint
+    row_step = np.linspace(-left, right, n_cols)
+    col_step = np.linspace(up, -down, n_rows)
+
+    # each node will have three measurements which define its left and right weights
+    # 1) x_l:   horizontal distance to left parent
+    # 2) x_r:   horizontal distance to right parent
+    # 3) y:     vertical distance to parents
+    # note: while the link can be at any angle, we can treat it as though the link
+    # is horizontal because we only care about distances, which are irrespective
+    # of the angle of the link in space
+    x_l = row_step*spacing + link_length/2
+    x_r = -1*row_step*spacing + link_length/2
+    y = col_step*spacing
+
+    coupler_children = [] # empty list to place coupler children
+
+    for row in range(n_rows):
+        for col in range(n_cols):
+            # create the child
+            child = node(None)
+
+            child.left_weight =  (x_l[col]**2+y[row]**2)**0.5
+            child.right_weight = (x_r[col]**2+y[row]**2)**0.5
+
+            child.left_parent =  parent1
+            child.right_parent = parent2
+
+            coupler_children.append(child)
+
+    return coupler_children
 
 if __name__ == "__main__":
 

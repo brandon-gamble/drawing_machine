@@ -12,10 +12,12 @@ from matplotlib import pyplot as plt
 5   clearance correction on 5bl
 6   clearance correction on 5bl, lengths chosen to
         nicely see that link length ratio preserved
+7   coupler_grid generation on a four bar linkage, comparing to wikipedia page
+    https://en.wikipedia.org/wiki/Four-bar_linkage
 '''
 
 
-test = 6
+test = 7
 
 if test == 1:
 
@@ -44,6 +46,7 @@ if test == 1:
     # plot
     plt.plot(a.value[0,:],a.value[1,:])
     plt.show()
+
 
 
 elif test == 2:
@@ -315,3 +318,49 @@ elif test == 6:
     # clearance = -3
     # change from weights 4,2 to weights 6,3.
     # total of 3 added (2 to L, 1 to R), ratio of L=2R is preserved.
+
+elif test == 7:
+
+    n = 2000
+    c = np.array([[0],[0]]) # circle center
+    drive1 = scratch.get_drive_trace(5.5,c,.12,n) # circular drive trace
+
+    c = np.array([[16.4],[-13.1]]) # circle center
+    drive2 = scratch.get_drive_trace(0,c,.11,n) # circular drive trace
+
+    a = graph.node(None) # root node (spiro end effector)
+    b = graph.node(drive1) # driving node 1
+    c = graph.node(drive2) # drivign node 2
+
+    # connect a to b with link length 10
+    a.left_parent = b
+    a.left_weight = 16.4
+
+    # connect a to c with link length 10
+    a.right_parent = c
+    a.right_weight = 16.1
+
+    #########################
+    # make coupler children #
+    #########################
+    left = 3
+    right = 4
+    up = 2
+    down = 4
+    spacing = 8.9
+    children = graph.coupler_grid(a,b,a.left_weight,left,up,right,down,spacing)
+
+    # compute end effector location
+    graph.postorder_populate(a)
+
+    # compute coupler curves
+    for child in children:
+        child.populate_node()
+        child.plot_node()
+
+    # plot
+    a.plot_node()
+    b.plot_node()
+    c.plot_node()
+    graph.plot_machine(a,0)
+    plt.show()

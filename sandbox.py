@@ -343,12 +343,12 @@ elif test == 7:
     #########################
     # make coupler children #
     #########################
-    left = 3
-    right = 3
-    up = 3
-    down = 3
+    left = 5
+    right = 5
+    up = 5
+    down = 5
     spacing = 8.9
-    children = graph.coupler_grid(a,b,a.left_weight,left,up,right,down,spacing)
+    children = graph.coupler_grid(b,a,a.left_weight,left,right,up,down,spacing)
 
     # compute end effector location
     graph.postorder_populate(a)

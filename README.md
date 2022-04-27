@@ -51,6 +51,14 @@ Finally, **D** is the child of **E** and **F**, so we draw edges connecting **D*
 
 ![scissor 5bl image](/assets/diagrams/scissor_5bl.png)
 
+Here is an example plot of a scissor 5BL. All link lengths are symmetric, resulting in symmetric joint paths. The paths of E and F are pure circles.
+
+![S5BL_eg1](/assets/drawings/scissor_5bl_01.JPG)
+
+In this example, the links lengths are no longer symmetric. The result is quite interesting. The path of A alludes somewhat to a torus; the path of B has been stretched to be fatter; the paths of C and D have been stretched to be long and skinny.
+
+![S5BL_eg1a](/assets/drawings/scissor_5bl_01_a.JPG)
+
 <!-- #### 4/5 BL
 We have described the 4BL as a 2CI solution whose inputs are a circular path and a static point. When we trade the static point for another circular path, we get a 5BL. But what happens if we use other cyclic paths (non-circular) as the inputs to the 2CI solver? For example, What if the input paths are ellipses (achieved with the trammel of Archimedes)? Lissajous curves (achieved with [sufficiently large 5BL](https://www.reddit.com/r/mathpics/comments/bta0az/i_found_that_pintograph_drawings_converge_to/))? 4BL traces? Using our node representation, it is incredibly simple to solve for the motions of complex machines, as well as generate graphs that may not have a physical analog linkage.
 

@@ -1,5 +1,5 @@
 # Generic Linkage Solver
-collab update
+
 ## Inspiration
 This project started in 2017 after I came across a video of a [Guilloche Drawing Machine](https://www.youtube.com/watch?v=BG9e06IWAxE). This machine was effectively a five bar linkage (5BL) and a spinning table. The motors of the linkage would rotate at constant speeds that varied slightly from one another. Simultaneously, the surface that the linkage drew on rotated. I was captivated by the complex and beautiful curves the machine was able to produce.
 These Guilloche drawings were reminiscent of the spirograph drawings I would make as a kid, but far more intricate and organic.

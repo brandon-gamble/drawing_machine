@@ -95,12 +95,16 @@ Well, it turns out that if our system doesn't have any couplers, i.e., all links
 
 With this realization, I explored common binary tree traversal algorithms and found that the post-order traversal algorithm would guarantee that we start at the input nodes and traverse upward to the end effector one layer of the tree at a time.
 
-Following the post-order traversal we can inspect each node along the way: if it is empty, populate it and move on, if it is populated, move on.
-When we arrive at the end effector node, we will have populated every node in the graph.
+Following the post-order traversal we can inspect each node along the way as we move up the graph: if it is empty, populate it and move on, if it is populated, move on.
+When we arrive at the end effector node at the top of the graph, we will have populated every node in the graph.
 
-It was a concern that the post-order traversal algorithm wouldn't work for graphs that include couplers, since these are strictly graphs and NOT binary trees. However, after more experimentation, it was found that this algorithm works not only for full binary trees, but also for the graphs we get as a result of introducing couplers to a linkage system. Very convenient!
+It was a concern that the post-order traversal algorithm wouldn't work for graphs that include couplers due to the more complicated parent/child relationship. It is guaranteed when you inspect a child node in the 5BL graph (and other graphs that do not contain couplers) to have both parents populated. However, in graphs with couplers such as the scissor 5BL, traversal and population order are more important. If the algorithm first inspects node C, it will be empty and try to populate it, but one of its parents, node D, is still unpopulated, which will break the traverse/populate routine. We need to ensure that node D, whose parents are the populated input nodes E and F, is the first to be populated, _then_ nodes B and C, and _then_ node A.
 
-Looking at the scissor 5BL once more, which, as noted, is actually a graph, NOT a binary tree: the post-order traversal algorithm returns the order **EEF**-**DCE**-**FDE**-**BA**. Note that **E** and **F** are input nodes, so they are already populated. Removing them from our traversal order, we get: **DCDBA**. We can drop the second **D** since the first time we encounter it in the traversal we will populate it. So our order of population becomes: **DCBA**. Following this order for population, we get exactly what we intuitively worked out above. We start with **D**, as it is the child of the two input nodes. Then we can populate **C** and **B**, and finally populate **A**.
+After some experimentation it was found that post-order traversal just so happens to produce valid traversal orders on graphs with couplers. Very convenient!
+
+Let's work through the traversal of the scissor 5BL to see how it works. The post-order traversal algorithm returns the order **EEF**-**DCE**-**FDE**-**BA**. 
+The purpose of traversing is to populate unsolved nodes. Therefore, we can remove any nodes that are already populated. We can also remove duplicates in the traversal because we only need to visit unpopulated nodes once to popuulate them (assuming that the first time we arrive at a node it is able to populated).
+**E** and **F** are prepopulated input nodes and can be removed, giving: **DCDBA**. We can drop the second **D** since the first time we encounter it in the traversal we will populate it. So our order of population becomes: **DCBA**. Following this order for population, we get exactly what we intuitively worked out above. We start with **D**, as it is the child of the two input nodes. Then we can populate **C** and **B**, and finally populate **A**.
 
 We now have a way of representing a linkage system as a graph as well as an algorithm for traversing and populating the graph.
 
